@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tidyfiles"
+version = "1.0.0"
+description = "Karışık klasörleri dosya türüne göre düzenleyen, geri alınabilir komut satırı aracı"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+tidyfiles = "tidyfiles.cli:main"
+
+[tool.setuptools]
+packages = ["tidyfiles"]
