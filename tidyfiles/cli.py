@@ -49,7 +49,15 @@ def _run_organize(folder: Path, by_date: bool, dry_run: bool) -> int:
     return 0
 
 
+def _use_utf8_output() -> None:
+    """Konsol kodlaması UTF-8 değilse (örn. Windows cp1252) Türkçe karakterlerde çökmesini önler."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
 def main(argv: list[str] | None = None) -> int:
+    _use_utf8_output()
     args = build_parser().parse_args(argv)
     try:
         if args.command == "organize":
