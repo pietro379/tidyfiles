@@ -9,6 +9,12 @@ Karışık bir klasörü (örneğin İndirilenler) dosya türüne ve isteğe ba�
 
 İndirilenler klasörü zamanla yüzlerce dosyayla dolar ve bir şey bulmak zorlaşır. tidyfiles tek komutla bunu düzene sokar; yanlış giderse `undo` ile her şey olduğu gibi geri gelir.
 
+<p align="center">
+  <img src="docs/demo.svg" width="760" alt="tidyfiles ile kuru çalıştırma, düzenleme ve geri alma örneği">
+</p>
+
+<p align="center"><sub>Gerçek bir çalıştırmanın çıktısı (klasör yolu kısaltıldı).</sub></p>
+
 ## Özellikler
 
 - **Türe göre düzenleme:** Görseller, Belgeler, Videolar, Müzik, Arşivler, Kurulum, Kod ve Diğer klasörlerine ayırır.
@@ -34,25 +40,13 @@ python -m tidyfiles undo "C:\Users\ad\Downloads"
 
 İsteğe bağlı olarak `pip install .` ile kurup doğrudan `tidyfiles organize ...` komutunu da kullanabilirsin.
 
-## Örnek Çıktı
-
-```text
-  a.mp3  ->  Müzik/a.mp3
-  rapor.pdf  ->  Belgeler/rapor.pdf
-
-Belgeler: 1 dosya
-Müzik: 1 dosya
-
-2 dosya taşındı. Geri almak için: tidyfiles undo "C:\Users\ad\Downloads"
-```
-
 ## Testler
 
 ```bash
 python -m unittest discover -s tests -v
 ```
 
-Testler geçici klasörlerde çalışır; kategori eşleme, çakışma yönetimi, tarihli düzenleme, geri alma ve komut satırı akışını kapsar. GitHub Actions, her gönderimde testleri Ubuntu ve Windows üzerinde Python 3.10 ve 3.12 ile çalıştırır.
+Testler geçici klasörlerde çalışır; kategori eşleme, çakışma yönetimi, tarihli düzenleme, geri alma, komut satırı akışı ve ekrana yazılan çıktıyı kapsar. GitHub Actions, her gönderimde testleri Ubuntu ve Windows üzerinde Python 3.10 ve 3.12 ile çalıştırır.
 
 ## Proje Yapısı
 
