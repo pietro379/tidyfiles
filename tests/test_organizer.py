@@ -1,3 +1,5 @@
+import contextlib
+import io
 import os
 import tempfile
 import unittest
@@ -103,6 +105,55 @@ class CliTests(unittest.TestCase):
 
     def test_missing_folder_returns_error_code(self):
         self.assertEqual(main(["organize", "bu-klasor-yok-123"]), 1)
+
+
+def run_cli(*argv: str) -> tuple[int, str]:
+    """Komutu çalıştırır; çıkış kodunu ve ekrana yazılan metni döndürür."""
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        code = main(list(argv))
+    return code, buffer.getvalue()
+
+
+class CliOutputTests(unittest.TestCase):
+    def test_empty_folder_reports_nothing_to_do(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            code, output = run_cli("organize", tmp)
+        self.assertEqual(code, 0)
+        self.assertIn("Düzenlenecek dosya bulunamadı.", output)
+
+    def test_dry_run_prints_plan_and_summary_without_moving(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            touch(root / "rapor.pdf")
+            touch(root / "not.txt")
+            touch(root / "a.mp3")
+            code, output = run_cli("organize", tmp, "--dry-run")
+
+            self.assertEqual(code, 0)
+            self.assertIn("rapor.pdf  ->  Belgeler/rapor.pdf", output)
+            self.assertIn("Belgeler: 2 dosya", output)
+            self.assertIn("Müzik: 1 dosya", output)
+            self.assertIn("Kuru çalıştırma: hiçbir dosya taşınmadı.", output)
+            self.assertTrue((root / "rapor.pdf").exists())
+            self.assertFalse((root / LOG_NAME).exists())
+
+    def test_by_date_destination_is_shown_in_the_plan(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            touch(Path(tmp) / "a.mp3", mtime=datetime(2026, 9, 18))
+            _, output = run_cli("organize", tmp, "--by-date", "--dry-run")
+        self.assertIn("a.mp3  ->  Müzik/2026-09/a.mp3", output)
+
+    def test_second_undo_reports_nothing_to_restore(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            touch(Path(tmp) / "a.mp3")
+            run_cli("organize", tmp)
+            _, first = run_cli("undo", tmp)
+            code, second = run_cli("undo", tmp)
+
+        self.assertIn("1 dosya geri alındı.", first)
+        self.assertEqual(code, 0)
+        self.assertIn("Geri alınacak bir işlem yok.", second)
 
 
 if __name__ == "__main__":
