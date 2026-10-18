@@ -32,7 +32,7 @@
 @keyframes o15{0%,52.208%{opacity:0}52.250%,64.708%{opacity:1}66.375%,100%{opacity:0}}
 .o15{animation-name:o15}
 </style>
-<rect width="760" height="428" rx="10" fill="#0d1117"/>
+<rect x="0.5" y="0.5" width="759" height="427" rx="10" fill="#010409" stroke="#30363d"/>
 <rect width="760" height="38" rx="10" fill="#161b22"/>
 <rect y="28" width="760" height="10" fill="#161b22"/>
 <circle cx="22" cy="19" r="6" fill="#ff5f56"/><circle cx="42" cy="19" r="6" fill="#ffbd2e"/><circle cx="62" cy="19" r="6" fill="#27c93f"/>
